@@ -1,0 +1,285 @@
+<div class="principal">
+  <img class="logo" src="./../assets/img/Imagen 3.png" alt="" />
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="formulario">
+          <div class="col-md-12">
+            <h1 class="text-center">¡Cotiza la tuya!</h1>
+          </div>
+          <form [formGroup]="form">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label for="modelo" class="form-label">
+                    Selecciona un modelo
+                  </label>
+                  <select
+                    class="form-control"
+                    id="modelo"
+                    aria-describedby="Seleccione un modelo"
+                    formControlName="modelo"
+                  >
+                    <option selected value="">Seleccione</option>
+                    <option [value]="item" *ngFor="let item of modelos">
+                      {{ item }}
+                    </option>
+                  </select>
+                  <small
+                    *ngIf="
+                      (modelo.invalid && (modelo.dirty || modelo.touched)) ||
+                      (modelo.invalid && submitted)
+                    "
+                    >{{ getErrorMessage(modelo) }}</small
+                  >
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label for="nombre" class="form-label">Nombre Completo</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nombre"
+                    formControlName="nombre"
+                  />
+                  <small
+                    *ngIf="
+                      (nombre.invalid && (nombre.dirty || nombre.touched)) ||
+                      submitted
+                    "
+                    >{{ getErrorMessage(nombre) }}</small
+                  >
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="email"
+                    formControlName="email"
+                  />
+                  <small
+                    *ngIf="
+                      email.invalid &&
+                      (email.dirty || email.touched || submitted)
+                    "
+                    >{{ getErrorMessage(email) }}</small
+                  >
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label for="telefono" class="form-label"
+                    >Número celular</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="telefono"
+                    formControlName="telefono"
+                  />
+                  <small
+                    *ngIf="
+                      telefono.invalid &&
+                      (telefono.dirty || telefono.touched || submitted)
+                    "
+                    >{{ getErrorMessage(telefono) }}</small
+                  >
+                </div>
+              </div>
+
+              <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                  <label for="departamento" class="form-label">
+                    Departamento
+                  </label>
+                  <select
+                    class="form-control"
+                    id="departamento"
+                    aria-describedby="Seleccione un Departamento"
+                    formControlName="departamento"
+                    (change)="cargarCiudad($event.target.value)"
+                  >
+                    <option selected value="">Seleccione</option>
+                    <option
+                      [value]="item.id"
+                      *ngFor="let item of departamentos"
+                    >
+                      {{ item.nombre }}
+                    </option>
+                  </select>
+                  <small
+                    *ngIf="
+                      departamento.invalid &&
+                      (departamento.dirty || departamento.touched || submitted)
+                    "
+                    >{{ getErrorMessage(departamento) }}</small
+                  >
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                  <label for="ciudad" class="form-label"> Ciudad </label>
+                  <select
+                    class="form-control"
+                    id="ciudad"
+                    aria-describedby="Seleccione una ciudad"
+                    formControlName="ciudad"
+                  >
+                    <option selected value="">Seleccione</option>
+                    <option [value]="item.id" *ngFor="let item of ciudades">
+                      {{ item.nombre }}
+                    </option>
+                  </select>
+                  <small
+                    *ngIf="
+                      ciudad.invalid &&
+                      (ciudad.dirty || ciudad.touched || submitted)
+                    "
+                    >{{ getErrorMessage(ciudad) }}</small
+                  >
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="tratamiento"
+                    formControlName="tratamiento"
+                  />
+                  <label class="form-check-label" for="tratamiento">
+                    Acepto la política de
+                    <a href="#">Tratamiento Datos Personales</a>
+                  </label>
+                  <br />
+                  <small
+                    *ngIf="
+                      (tratamiento.invalid &&
+                        (tratamiento.dirty || tratamiento.touched)) ||
+                      (tratamiento.invalid && submitted)
+                    "
+                    >{{ getErrorMessage(tratamiento) }}</small
+                  >
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <button class="btn submit" (click)="save()">
+                  Enviar datos
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <img class="info" src="./../assets/img/Imagen 2.png" alt="" />
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">¡Ups!</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>
+      Lo sentimos, no se pudo generar la solicitud dado a que el formulario
+      contiene errores, por favor intentelo nuevamente.
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="c('Save click')"
+    >
+      Cerrar
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #error let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">¡Ups!</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>
+      Lo sentimos, no podemos generar la solicitud dado a que ya tenemos tus
+      datos, pronto un representante se contactará contigo.
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="c('Save click')"
+    >
+      Cerrar
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #success let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 id="modal-basic-title">
+      <h4 class="title">
+        <strong>¡Gracias por confiar en nosotros y dejarnos tus datos!,</strong>
+      </h4>
+      <h4 class="subtitle">
+        para SsangYong tu eres lo más importante y pronto nos pondremos en
+        contacto contigo.
+      </h4>
+      <h4 class="titlebig">CONOCE MÁS DE TU FUTURA CAMIONETA</h4>
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>
+      <iframe
+        width="100%"
+        height="315"
+        src="https://www.youtube.com/embed/e98HlHG5Djg"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="c('Save click')"
+    >
+      Cerrar
+    </button>
+  </div>
+</ng-template>
